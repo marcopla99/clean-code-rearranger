@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.psi.KtFunction
 
 fun KtFunction.getSignature(): String {
     val name = this.name ?: "<anonymous>"
-    val parameters = this.valueParameters.joinToString(", ") { param ->
+    val parameters = this.valueParameters.joinToString { param ->
         val type = param.typeReference?.text ?: "Any"
         "${param.name ?: "_"}: $type"
     }

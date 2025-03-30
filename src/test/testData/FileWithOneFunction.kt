@@ -1,3 +1,3 @@
 package test
 
-fun foo() {}
+fun foo(a: Int, b: String) {}

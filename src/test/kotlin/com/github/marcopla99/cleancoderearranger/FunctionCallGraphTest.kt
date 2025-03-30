@@ -20,7 +20,15 @@ class FunctionCallGraphTest: BasePlatformTestCase() {
 
         val functionCallGraph = FunctionCallGraph(ktFile)
 
-        assertEquals(listOf("fun foo(): Unit"), functionCallGraph.roots.map { it.getSignature() })
+        assertEquals(listOf("fun foo(a: Int, b: String): Unit"), functionCallGraph.roots.map { it.getSignature() })
+    }
+
+    fun testFileWithTwoFunctions() {
+        val ktFile = myFixture.configureByFile("FileWithTwoFunctions.kt") as KtFile
+
+        val functionCallGraph = FunctionCallGraph(ktFile)
+
+        assertEquals("{fun foo(): Unit=[fun bar(): Unit], fun bar(): Unit=[]}", functionCallGraph.toString())
     }
 
     override fun getTestDataPath() = "src/test/testData"
