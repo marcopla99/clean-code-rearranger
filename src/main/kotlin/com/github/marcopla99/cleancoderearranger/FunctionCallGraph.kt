@@ -7,8 +7,10 @@ import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtFunction
 
+typealias Graph = Map<KtFunction, List<KtFunction>>
+
 class FunctionCallGraph(file: KtFile) {
-    private val graphs: MutableList<Map<KtFunction, List<KtFunction>>> = mutableListOf()
+    private val graphs: MutableList<Graph> = mutableListOf()
 
     init {
         buildFromFile(file)
@@ -17,7 +19,7 @@ class FunctionCallGraph(file: KtFile) {
 
     private fun buildFromFile(file: KtFile) {
         val functions = file.children.mapNotNull { it as? KtFunction }
-        val graph = buildMap<KtFunction, List<KtFunction>> {
+        val graph = buildGraph {
             functions.forEach { function ->
                 val callees = function.getCalleesInFile(file = file)
                 put(function, get(function).orEmpty() + callees)
@@ -30,7 +32,7 @@ class FunctionCallGraph(file: KtFile) {
         val classes = file.children.mapNotNull { it as? KtClass }
         classes.forEach { ktClass ->
             val methods = ktClass.body?.children?.mapNotNull { it as? KtFunction } ?: emptyList()
-            val graph = buildMap<KtFunction, List<KtFunction>> {
+            val graph = buildGraph {
                 methods.forEach { method ->
                     val callees = method.getCalleesInClass(ktClass = ktClass)
                     put(method, get(method).orEmpty() + callees)
@@ -54,3 +56,7 @@ class FunctionCallGraph(file: KtFile) {
         }
     } + "]"
 }
+
+private inline fun buildGraph(
+    builderAction: MutableMap<KtFunction, List<KtFunction>>.() -> Unit
+) = buildMap(builderAction)
