@@ -8,40 +8,49 @@ import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtFunction
 
 class FunctionCallGraph(file: KtFile) {
-    private val functionsByRoots = emptyMap<KtFunction, List<KtFunction>>().toMutableMap()
-
-    val roots
-        get() = functionsByRoots.keys.toList()
+    private val graphs: MutableList<Map<KtFunction, List<KtFunction>>> = mutableListOf()
 
     init {
         buildFromFile(file)
-        buildFromClass(file)
+        buildFromClasses(file)
     }
 
     private fun buildFromFile(file: KtFile) {
         val functions = file.children.mapNotNull { it as? KtFunction }
-        functions.forEach { function ->
-            val callees = function.getCalleesInFile(file = file)
-            functionsByRoots[function] = functionsByRoots[function].orEmpty() + callees
+        val graph = buildMap<KtFunction, List<KtFunction>> {
+            functions.forEach { function ->
+                val callees = function.getCalleesInFile(file = file)
+                put(function, get(function).orEmpty() + callees)
+            }
         }
+        if (graph.isNotEmpty()) graphs.add(graph)
     }
 
-    private fun buildFromClass(file: KtFile) {
+    private fun buildFromClasses(file: KtFile) {
         val classes = file.children.mapNotNull { it as? KtClass }
         classes.forEach { ktClass ->
             val methods = ktClass.body?.children?.mapNotNull { it as? KtFunction } ?: emptyList()
-            methods.forEach { method ->
-                val callees = method.getCalleesInClass(ktClass = ktClass)
-                functionsByRoots[method] = functionsByRoots[method].orEmpty() + callees
+            val graph = buildMap<KtFunction, List<KtFunction>> {
+                methods.forEach { method ->
+                    val callees = method.getCalleesInClass(ktClass = ktClass)
+                    put(method, get(method).orEmpty() + callees)
+                }
             }
+            if (graph.isNotEmpty()) graphs.add(graph)
         }
     }
 
-    override fun toString(): String = "{" +
-            functionsByRoots.entries.joinToString { entry ->
-                val key = entry.key.getSignature()
-                val value = entry.value.joinToString { it.getSignature() }
-                "$key=[$value]"
-            } +
-            "}"
+    override fun toString(): String = "[" + graphs.joinToString { graph ->
+        buildString {
+            append("{")
+            append(
+                graph.map { entry ->
+                    val key = entry.key.getSignature()
+                    val value = entry.value.joinToString { it.getSignature() }
+                    "$key=[$value]"
+                }.joinToString()
+            )
+            append("}")
+        }
+    } + "]"
 }

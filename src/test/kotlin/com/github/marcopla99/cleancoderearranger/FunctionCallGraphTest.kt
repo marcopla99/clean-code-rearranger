@@ -1,9 +1,7 @@
 package com.github.marcopla99.cleancoderearranger
 
-import com.github.marcopla99.cleancoderearranger.util.getSignature
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.psi.KtFunction
 
 class FunctionCallGraphTest: BasePlatformTestCase() {
 
@@ -12,7 +10,7 @@ class FunctionCallGraphTest: BasePlatformTestCase() {
 
         val functionCallGraph = FunctionCallGraph(ktFile)
 
-        assertEquals(emptyList<KtFunction>(), functionCallGraph.roots)
+        assertEquals("[]", functionCallGraph.toString())
     }
 
     fun testFileWithOneFunction() {
@@ -20,7 +18,7 @@ class FunctionCallGraphTest: BasePlatformTestCase() {
 
         val functionCallGraph = FunctionCallGraph(ktFile)
 
-        assertEquals(listOf("fun foo(a: Int, b: String): Unit"), functionCallGraph.roots.map { it.getSignature() })
+        assertEquals("[{fun foo(a: Int, b: String): Unit=[]}]", functionCallGraph.toString())
     }
 
     fun testFileWithTwoFunctions() {
@@ -28,7 +26,7 @@ class FunctionCallGraphTest: BasePlatformTestCase() {
 
         val functionCallGraph = FunctionCallGraph(ktFile)
 
-        assertEquals("{fun foo(): Unit=[fun bar(): Unit], fun bar(): Unit=[]}", functionCallGraph.toString())
+        assertEquals("[{fun foo(): Unit=[fun bar(): Unit], fun bar(): Unit=[]}]", functionCallGraph.toString())
     }
 
     fun testFileWithClass() {
@@ -37,7 +35,21 @@ class FunctionCallGraphTest: BasePlatformTestCase() {
         val functionCallGraph = FunctionCallGraph(ktFile)
 
         assertEquals(
-            "{fun b(): Unit=[], fun a(): Unit=[fun b(): Unit]}",
+            "[{fun b(): Unit=[], fun a(): Unit=[fun b(): Unit]}]",
+            functionCallGraph.toString()
+        )
+    }
+
+    fun testFileWithFunctionsOutsideClass() {
+        val ktFile = myFixture.configureByFile("FunctionsOutsideClass.kt") as KtFile
+
+        val functionCallGraph = FunctionCallGraph(ktFile)
+
+        assertEquals(
+            "[" +
+                    "{fun b(): Unit=[], fun a(): Unit=[fun b(): Unit]}, " +
+                    "{fun d(): Unit=[], fun e(): Unit=[fun d(): Unit]}" +
+                    "]",
             functionCallGraph.toString()
         )
     }
