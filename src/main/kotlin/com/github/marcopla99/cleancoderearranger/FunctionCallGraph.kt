@@ -1,12 +1,11 @@
 package com.github.marcopla99.cleancoderearranger
 
+import com.github.marcopla99.cleancoderearranger.util.getCalleesInClass
+import com.github.marcopla99.cleancoderearranger.util.getCalleesInFile
 import com.github.marcopla99.cleancoderearranger.util.getSignature
-import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtFunction
-import org.jetbrains.kotlin.psi.psiUtil.containingClass
-import org.jetbrains.kotlin.psi.psiUtil.referenceExpression
 
 class FunctionCallGraph(file: KtFile) {
     private val functionsByRoots = emptyMap<KtFunction, List<KtFunction>>().toMutableMap()
@@ -45,22 +44,4 @@ class FunctionCallGraph(file: KtFile) {
                 "$key=[$value]"
             } +
             "}"
-}
-
-private fun KtFunction.getCalleesInFile(file: KtFile): List<KtFunction> {
-    return bodyExpression?.children?.flatMap { psiElement ->
-        val referenceExpression = (psiElement as? KtCallExpression)?.referenceExpression()
-        referenceExpression?.references
-            ?.mapNotNull { (it.resolve() as? KtFunction) }
-            ?.filter { (it.containingFile as? KtFile) == file } ?: emptyList()
-    } ?: emptyList()
-}
-
-private fun KtFunction.getCalleesInClass(ktClass: KtClass): List<KtFunction> {
-    return bodyExpression?.children?.flatMap { psiElement ->
-        val referenceExpression = (psiElement as? KtCallExpression)?.referenceExpression()
-        referenceExpression?.references
-            ?.mapNotNull { (it.resolve() as? KtFunction) }
-            ?.filter { it.containingClass() == ktClass } ?: emptyList()
-    } ?: emptyList()
 }
