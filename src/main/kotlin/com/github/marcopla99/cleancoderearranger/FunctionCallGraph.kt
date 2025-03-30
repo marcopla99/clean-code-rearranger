@@ -15,11 +15,19 @@ class FunctionCallGraph(file: KtFile) {
         get() = functionsByRoots.keys.toList()
 
     init {
+        buildFromFile(file)
+        buildFromClass(file)
+    }
+
+    private fun buildFromFile(file: KtFile) {
         val functions = file.children.mapNotNull { it as? KtFunction }
         functions.forEach { function ->
             val callees = function.getCalleesInFile(file = file)
             functionsByRoots[function] = functionsByRoots[function].orEmpty() + callees
         }
+    }
+
+    private fun buildFromClass(file: KtFile) {
         val classes = file.children.mapNotNull { it as? KtClass }
         classes.forEach { ktClass ->
             val methods = ktClass.body?.children?.mapNotNull { it as? KtFunction } ?: emptyList()
