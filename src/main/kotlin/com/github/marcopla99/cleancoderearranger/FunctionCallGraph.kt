@@ -2,6 +2,7 @@ package com.github.marcopla99.cleancoderearranger
 
 import com.github.marcopla99.cleancoderearranger.util.getSignature
 import org.jetbrains.kotlin.psi.KtCallExpression
+import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtFunction
 import org.jetbrains.kotlin.psi.psiUtil.referenceExpression
@@ -17,6 +18,14 @@ class FunctionCallGraph(file: KtFile) {
         functions.forEach { function ->
             val callees = function.getCalleesInFile(file = file)
             functionsByRoots[function] = functionsByRoots[function].orEmpty() + callees
+        }
+        val classes = file.children.mapNotNull { it as? KtClass }
+        classes.forEach { ktClass ->
+            val methods = ktClass.body?.children?.mapNotNull { it as? KtFunction } ?: emptyList()
+            methods.forEach { function ->
+                val callees = function.getCalleesInFile(file = file)
+                functionsByRoots[function] = functionsByRoots[function].orEmpty() + callees
+            }
         }
     }
 

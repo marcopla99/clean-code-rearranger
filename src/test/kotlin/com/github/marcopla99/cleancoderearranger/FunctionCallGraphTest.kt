@@ -31,5 +31,16 @@ class FunctionCallGraphTest: BasePlatformTestCase() {
         assertEquals("{fun foo(): Unit=[fun bar(): Unit], fun bar(): Unit=[]}", functionCallGraph.toString())
     }
 
+    fun testFileWithClass() {
+        val ktFile = myFixture.configureByFile("FileWithClass.kt") as KtFile
+
+        val functionCallGraph = FunctionCallGraph(ktFile)
+
+        assertEquals(
+            "{fun b(): Unit=[], fun a(): Unit=[fun b(): Unit]}",
+            functionCallGraph.toString()
+        )
+    }
+
     override fun getTestDataPath() = "src/test/testData"
 }
