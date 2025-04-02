@@ -10,7 +10,8 @@ import org.jetbrains.kotlin.psi.KtFunction
 typealias Graph = Map<KtFunction, List<KtFunction>>
 
 class FunctionCallGraph(file: KtFile) {
-    private val graphs: MutableList<Graph> = mutableListOf()
+    private val _graphs: MutableList<Graph> = mutableListOf()
+    val graphs: List<Graph> = _graphs
 
     init {
         buildFromFile(file)
@@ -25,7 +26,7 @@ class FunctionCallGraph(file: KtFile) {
                 put(function, get(function).orEmpty() + callees)
             }
         }
-        if (graph.isNotEmpty()) graphs.add(graph)
+        if (graph.isNotEmpty()) _graphs.add(graph)
     }
 
     private fun buildFromClasses(file: KtFile) {
@@ -38,7 +39,7 @@ class FunctionCallGraph(file: KtFile) {
                     put(method, get(method).orEmpty() + callees)
                 }
             }
-            if (graph.isNotEmpty()) graphs.add(graph)
+            if (graph.isNotEmpty()) _graphs.add(graph)
         }
     }
 

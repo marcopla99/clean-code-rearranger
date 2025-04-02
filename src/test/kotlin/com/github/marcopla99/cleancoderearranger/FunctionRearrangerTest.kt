@@ -1,0 +1,23 @@
+package com.github.marcopla99.cleancoderearranger
+
+import com.github.marcopla99.cleancoderearranger.rearranger.GraphRearranger
+import com.github.marcopla99.cleancoderearranger.util.getSignature
+import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import org.jetbrains.kotlin.psi.KtFile
+
+class FunctionRearrangerTest: BasePlatformTestCase() {
+
+    fun testRearrangeWithTwoTopLevelFunctions() {
+        val ktFile = myFixture.configureByFile("FileWithTwoFunctions.kt") as KtFile
+        val functionCallGraph = FunctionCallGraph(ktFile)
+
+        val rearrangedFunctions = functionCallGraph.graphs.flatMap { graph ->
+            GraphRearranger.rearrange(graph)
+        }
+
+        assertEquals("[fun a(): Unit, fun b(): Unit]", rearrangedFunctions.map { it.getSignature() }.toString())
+    }
+
+
+    override fun getTestDataPath() = "src/test/testData"
+}

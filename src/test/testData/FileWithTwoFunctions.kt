@@ -1,5 +1,5 @@
-fun foo() {
-    bar()
-}
+fun b() {}
 
-fun bar() {}
+fun a() {
+    b()
+}

@@ -26,7 +26,7 @@ class FunctionCallGraphTest: BasePlatformTestCase() {
 
         val functionCallGraph = FunctionCallGraph(ktFile)
 
-        assertEquals("[{fun foo(): Unit=[fun bar(): Unit], fun bar(): Unit=[]}]", functionCallGraph.toString())
+        assertEquals("[{fun b(): Unit=[], fun a(): Unit=[fun b(): Unit]}]", functionCallGraph.toString())
     }
 
     fun testFileWithClass() {
