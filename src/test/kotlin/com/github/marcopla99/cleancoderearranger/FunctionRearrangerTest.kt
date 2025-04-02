@@ -31,5 +31,20 @@ class FunctionRearrangerTest: BasePlatformTestCase() {
         )
     }
 
+    fun testRearrangeWithManyTopLevelFunctions() {
+        val ktFile = myFixture.configureByFile("FileWithManyTopLevelFunctions.kt") as KtFile
+        val functionCallGraph = FunctionCallGraph(ktFile)
+
+        val rearrangedFunctions = functionCallGraph.graphs.map { graph ->
+            GraphRearranger.rearrange(graph)
+        }
+        assertEquals(
+            "[[fun foo(): Unit, fun bar(): Unit, " +
+                    "fun a(): Unit, fun b(): Unit, " +
+                    "fun c(): Unit, fun d(): Unit, fun e(): Unit]]",
+            rearrangedFunctions.map { functions -> functions.map { it.getSignature() } }.toString()
+        )
+    }
+
     override fun getTestDataPath() = "src/test/testData"
 }
