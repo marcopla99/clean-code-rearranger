@@ -18,6 +18,18 @@ class FunctionRearrangerTest: BasePlatformTestCase() {
         assertEquals("[fun a(): Unit, fun b(): Unit]", rearrangedFunctions.map { it.getSignature() }.toString())
     }
 
+    fun testRearrangeWithTopLevelFunctionSeparatedByClass() {
+        val ktFile = myFixture.configureByFile("FileWithTopLevelFunctionSeparatedByClass.kt") as KtFile
+        val functionCallGraph = FunctionCallGraph(ktFile)
+
+        val rearrangedFunctions = functionCallGraph.graphs.map { graph ->
+            GraphRearranger.rearrange(graph)
+        }
+        assertEquals(
+            "[[fun a(): Unit, fun b(): Unit], [fun foo(): Unit, fun bar(): Unit]]",
+            rearrangedFunctions.map { functions -> functions.map { it.getSignature() } }.toString()
+        )
+    }
 
     override fun getTestDataPath() = "src/test/testData"
 }
