@@ -17,6 +17,19 @@ class FunctionRearrangerTest: BasePlatformTestCase() {
         assertEquals("[]", rearrangedFunctions.map { functions -> functions.map { it.getSignature() } }.toString())
     }
 
+    fun testFileWithSingleFunction() {
+        val ktFile = myFixture.configureByFile("FileWithOneFunction.kt") as KtFile
+        val functionCallGraphs = FunctionCallGraphs(ktFile)
+
+        val rearrangedFunctions = functionCallGraphs.graphs.map { graph ->
+            GraphRearranger.rearrange(graph)
+        }
+        assertEquals(
+            "[[fun foo(a: Int, b: String): Unit]]",
+            rearrangedFunctions.map { functions -> functions.map { it.getSignature() } }.toString()
+        )
+    }
+
     fun testRearrangeWithTwoTopLevelFunctions() {
         val ktFile = myFixture.configureByFile("FileWithTwoFunctions.kt") as KtFile
         val functionCallGraphs = FunctionCallGraphs(ktFile)
@@ -55,5 +68,6 @@ class FunctionRearrangerTest: BasePlatformTestCase() {
             rearrangedFunctions.map { functions -> functions.map { it.getSignature() } }.toString()
         )
     }
+
     override fun getTestDataPath() = "src/test/testData"
 }
