@@ -30,6 +30,19 @@ class FunctionRearrangerTest: BasePlatformTestCase() {
         )
     }
 
+    fun testFileWithDiamondCalls() {
+        val ktFile = myFixture.configureByFile("FileWithDiamondCalls.kt") as KtFile
+        val functionCallGraphs = FunctionCallGraphs(ktFile)
+
+        val rearrangedFunctions = functionCallGraphs.graphs.map { graph ->
+            GraphRearranger.rearrange(graph)
+        }
+        assertEquals(
+            "[[fun a(): Unit, fun b(): Unit, fun c(): Unit, fun d(): Unit]]",
+            rearrangedFunctions.map { functions -> functions.map { it.getSignature() } }.toString()
+        )
+    }
+
     fun testRearrangeWithTwoTopLevelFunctions() {
         val ktFile = myFixture.configureByFile("FileWithTwoFunctions.kt") as KtFile
         val functionCallGraphs = FunctionCallGraphs(ktFile)
