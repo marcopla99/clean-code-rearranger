@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.psi.KtFunction
 
 typealias Graph = Map<KtFunction, List<KtFunction>>
 
-class FunctionCallGraph(file: KtFile) {
+class FunctionCallGraphs(file: KtFile) {
     private val _graphs: MutableList<Graph> = mutableListOf()
     val graphs: List<Graph> = _graphs
 

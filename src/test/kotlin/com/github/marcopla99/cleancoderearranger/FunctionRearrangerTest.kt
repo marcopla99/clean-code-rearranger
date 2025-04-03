@@ -9,9 +9,9 @@ class FunctionRearrangerTest: BasePlatformTestCase() {
 
     fun testRearrangeWithTwoTopLevelFunctions() {
         val ktFile = myFixture.configureByFile("FileWithTwoFunctions.kt") as KtFile
-        val functionCallGraph = FunctionCallGraph(ktFile)
+        val functionCallGraphs = FunctionCallGraphs(ktFile)
 
-        val rearrangedFunctions = functionCallGraph.graphs.flatMap { graph ->
+        val rearrangedFunctions = functionCallGraphs.graphs.flatMap { graph ->
             GraphRearranger.rearrange(graph)
         }
 
@@ -20,9 +20,9 @@ class FunctionRearrangerTest: BasePlatformTestCase() {
 
     fun testRearrangeWithTopLevelFunctionSeparatedByClass() {
         val ktFile = myFixture.configureByFile("FileWithTopLevelFunctionSeparatedByClass.kt") as KtFile
-        val functionCallGraph = FunctionCallGraph(ktFile)
+        val functionCallGraphs = FunctionCallGraphs(ktFile)
 
-        val rearrangedFunctions = functionCallGraph.graphs.map { graph ->
+        val rearrangedFunctions = functionCallGraphs.graphs.map { graph ->
             GraphRearranger.rearrange(graph)
         }
         assertEquals(
@@ -33,9 +33,9 @@ class FunctionRearrangerTest: BasePlatformTestCase() {
 
     fun testRearrangeWithManyTopLevelFunctions() {
         val ktFile = myFixture.configureByFile("FileWithManyTopLevelFunctions.kt") as KtFile
-        val functionCallGraph = FunctionCallGraph(ktFile)
+        val functionCallGraphs = FunctionCallGraphs(ktFile)
 
-        val rearrangedFunctions = functionCallGraph.graphs.map { graph ->
+        val rearrangedFunctions = functionCallGraphs.graphs.map { graph ->
             GraphRearranger.rearrange(graph)
         }
         assertEquals(
@@ -45,6 +45,5 @@ class FunctionRearrangerTest: BasePlatformTestCase() {
             rearrangedFunctions.map { functions -> functions.map { it.getSignature() } }.toString()
         )
     }
-
     override fun getTestDataPath() = "src/test/testData"
 }
