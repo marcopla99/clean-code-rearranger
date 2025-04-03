@@ -7,6 +7,16 @@ import org.jetbrains.kotlin.psi.KtFile
 
 class FunctionRearrangerTest: BasePlatformTestCase() {
 
+    fun testEmptyFile() {
+        val ktFile = myFixture.configureByFile("EmptyFile.kt") as KtFile
+        val functionCallGraphs = FunctionCallGraphs(ktFile)
+
+        val rearrangedFunctions = functionCallGraphs.graphs.map { graph ->
+            GraphRearranger.rearrange(graph)
+        }
+        assertEquals("[]", rearrangedFunctions.map { functions -> functions.map { it.getSignature() } }.toString())
+    }
+
     fun testRearrangeWithTwoTopLevelFunctions() {
         val ktFile = myFixture.configureByFile("FileWithTwoFunctions.kt") as KtFile
         val functionCallGraphs = FunctionCallGraphs(ktFile)
