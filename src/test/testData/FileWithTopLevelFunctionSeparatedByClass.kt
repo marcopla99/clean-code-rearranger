@@ -1,6 +1,4 @@
-fun a() {
-    b()
-}
+fun b() {}
 
 class C {
     fun bar() {}
@@ -9,4 +7,6 @@ class C {
     }
 }
 
-fun b() {}
+fun a() {
+    b()
+}
