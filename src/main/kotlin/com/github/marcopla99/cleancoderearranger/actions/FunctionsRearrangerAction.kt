@@ -28,6 +28,7 @@ class FunctionsRearrangerAction : AnAction() {
                 documentManager.commitDocument(document)
                 document.deleteString(it.startOffset, it.endOffset)
             }
+            documentManager.commitDocument(document)
             roots.forEachIndexed { index, root ->
                 var offset = root.endOffset
                 val elementsToInsertBack = children[index]
