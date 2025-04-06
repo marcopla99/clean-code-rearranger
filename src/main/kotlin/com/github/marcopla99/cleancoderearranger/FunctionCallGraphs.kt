@@ -4,6 +4,7 @@ import com.github.marcopla99.cleancoderearranger.util.getCalleesInClass
 import com.github.marcopla99.cleancoderearranger.util.getCalleesInFile
 import com.github.marcopla99.cleancoderearranger.util.getSignature
 import org.jetbrains.kotlin.psi.KtClass
+import org.jetbrains.kotlin.psi.KtDeclaration
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtFunction
 
@@ -32,11 +33,15 @@ class FunctionCallGraphs(file: KtFile) {
     private fun buildFromClasses(file: KtFile) {
         val classes = file.children.mapNotNull { it as? KtClass }
         classes.forEach { ktClass ->
-            val methods = ktClass.body?.children?.mapNotNull { it as? KtFunction } ?: emptyList()
+            val declarations = ktClass.body?.children?.mapNotNull { it as? KtDeclaration } ?: emptyList()
             val graph = buildGraph {
-                methods.forEach { method ->
-                    val callees = method.getCalleesInClass(ktClass = ktClass)
-                    put(method, get(method).orEmpty() + callees)
+                declarations.forEach { declaration ->
+                    val callees = declaration.getCalleesInClass(ktClass = ktClass)
+                    if (declaration !is KtFunction) {
+                        callees.forEach { put(it, emptyList()) }
+                    } else {
+                        put(declaration, get(declaration).orEmpty() + callees)
+                    }
                 }
             }
             if (graph.isNotEmpty()) _graphs.add(graph)

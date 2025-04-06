@@ -1,9 +1,6 @@
 package com.github.marcopla99.cleancoderearranger.util
 
-import org.jetbrains.kotlin.psi.KtCallExpression
-import org.jetbrains.kotlin.psi.KtClass
-import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.psi.KtFunction
+import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi.psiUtil.containingClass
 import org.jetbrains.kotlin.psi.psiUtil.referenceExpression
 
@@ -26,11 +23,12 @@ fun KtFunction.getCalleesInFile(file: KtFile): List<KtFunction> {
     } ?: emptyList()
 }
 
-fun KtFunction.getCalleesInClass(ktClass: KtClass): List<KtFunction> {
-    return bodyExpression?.children?.flatMap { psiElement ->
+fun KtDeclaration.getCalleesInClass(ktClass: KtClass): List<KtFunction> {
+    val declarationBody = children.firstOrNull { it is KtBlockExpression } ?: return emptyList()
+    return declarationBody.children.flatMap { psiElement ->
         val referenceExpression = (psiElement as? KtCallExpression)?.referenceExpression()
         referenceExpression?.references
             ?.mapNotNull { (it.resolve() as? KtFunction) }
             ?.filter { it.containingClass() == ktClass } ?: emptyList()
-    } ?: emptyList()
+    }
 }

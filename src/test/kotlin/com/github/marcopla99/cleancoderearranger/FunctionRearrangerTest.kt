@@ -82,5 +82,18 @@ class FunctionRearrangerTest: BasePlatformTestCase() {
         )
     }
 
+    fun testRearrangeClassWithInitializer() {
+        val ktFile = myFixture.configureByFile("FileWithClassWithInitializer.kt") as KtFile
+        val functionCallGraphs = FunctionCallGraphs(ktFile)
+
+        val rearrangedFunctions = functionCallGraphs.graphs.map { graph ->
+            GraphRearranger.rearrange(graph)
+        }
+        assertEquals(
+            "[[fun a(): Unit, fun b(): Unit, fun c(): Unit]]",
+            rearrangedFunctions.map { functions -> functions.map { it.getSignature() } }.toString()
+        )
+    }
+
     override fun getTestDataPath() = "src/test/testData"
 }
