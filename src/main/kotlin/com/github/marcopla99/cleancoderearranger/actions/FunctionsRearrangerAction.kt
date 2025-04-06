@@ -34,7 +34,7 @@ class FunctionsRearrangerAction : AnAction() {
                 elementsToInsertBack.forEach {
                     documentManager.commitDocument(document)
                     document.insertString(offset, it.text)
-                    offset += it.textRange.endOffset
+                    offset += it.textLength
                 }
             }
             documentManager.commitDocument(document)
