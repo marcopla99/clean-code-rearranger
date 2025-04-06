@@ -26,7 +26,11 @@ class FunctionsRearrangerAction : AnAction() {
         WriteCommandAction.runWriteCommandAction(project, "Rearrange Functions", "RearrangeFunctions", {
             children.flatten().forEach {
                 documentManager.commitDocument(document)
-                document.deleteString(it.startOffset, it.endOffset)
+                val lineNumberStart = document.getLineNumber(it.startOffset)
+                val lineNumberEnd = document.getLineNumber(it.endOffset) + 1
+                val startDeletionOffset = document.getLineStartOffset(lineNumberStart)
+                val endDeletionOffset = document.getLineStartOffset(lineNumberEnd.coerceAtMost(document.lineCount-1))
+                document.deleteString(startDeletionOffset, endDeletionOffset)
             }
             documentManager.commitDocument(document)
             roots.forEachIndexed { index, root ->

@@ -16,5 +16,11 @@ class FunctionsRearrangerActionTest : BasePlatformTestCase() {
         myFixture.checkResultByFile("output/TopLevelFunctionWithClass.kt")
     }
 
+    fun testClassWithInitializer() {
+        myFixture.configureByFile("input/ClassWithInitializer.kt") as KtFile
+        myFixture.performEditorAction("com.github.marcopla99.cleancoderearranger.actions.FunctionsRearrangerAction")
+        myFixture.checkResultByFile("output/ClassWithInitializer.kt")
+    }
+
     override fun getTestDataPath() = "src/test/testData"
 }
