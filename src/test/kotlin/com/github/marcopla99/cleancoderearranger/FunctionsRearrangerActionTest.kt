@@ -1,0 +1,20 @@
+package com.github.marcopla99.cleancoderearranger
+
+import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import org.jetbrains.kotlin.psi.KtFile
+
+class FunctionsRearrangerActionTest : BasePlatformTestCase() {
+    fun testTopLevelFunctionWithMultipleRoots() {
+        myFixture.configureByFile("input/TopLevelFunctionsWithMultipleRoots.kt") as KtFile
+        myFixture.performEditorAction("com.github.marcopla99.cleancoderearranger.actions.FunctionsRearrangerAction")
+        myFixture.checkResultByFile("output/TopLevelFunctionsWithMultipleRoots.kt")
+    }
+
+    fun testTopLevelFunctionWithClass() {
+        myFixture.configureByFile("input/TopLevelFunctionWithClass.kt") as KtFile
+        myFixture.performEditorAction("com.github.marcopla99.cleancoderearranger.actions.FunctionsRearrangerAction")
+        myFixture.checkResultByFile("output/TopLevelFunctionWithClass.kt")
+    }
+
+    override fun getTestDataPath() = "src/test/testData"
+}
