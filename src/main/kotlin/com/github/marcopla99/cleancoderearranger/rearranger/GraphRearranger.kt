@@ -25,7 +25,7 @@ object GraphRearranger {
     }
 }
 
-private fun Map<KtFunction, List<KtFunction>>.findRoots(): List<KtFunction> {
+private fun Graph.findRoots(): List<KtFunction> {
     val allNodes = this.keys.toSet()
     val allChildren = this.values.flatten().toSet()
     val roots = allNodes - allChildren
