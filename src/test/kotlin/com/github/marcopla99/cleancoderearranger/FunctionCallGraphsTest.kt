@@ -55,6 +55,20 @@ class FunctionCallGraphsTest: BasePlatformTestCase() {
         )
     }
 
+    fun testOuterFunctionCalledFromClass() {
+        val ktFile = myFixture.configureByFile("OuterFunctionCalledFromClass.kt") as KtFile
+
+        val functionCallGraphs = FunctionCallGraphs(ktFile)
+
+        assertEquals(
+            "[" +
+                    "{fun b(): Unit=[], fun a(): Unit=[fun b(): Unit]}, " +
+                    "{fun d(): Unit=[], fun e(): Unit=[fun d(): Unit]}" +
+                    "]",
+            functionCallGraphs.toString()
+        )
+    }
+
     fun testFileWithClassWithInitializer() {
         val ktFile = myFixture.configureByFile("FileWithClassWithInitializer.kt") as KtFile
 

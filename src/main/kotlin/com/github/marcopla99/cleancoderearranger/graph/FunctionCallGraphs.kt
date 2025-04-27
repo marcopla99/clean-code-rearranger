@@ -18,28 +18,28 @@ class FunctionCallGraphs(file: KtFile) {
     }
 
     private fun buildFromFile(file: KtFile) {
-        val visitor = object : PsiRecursiveElementVisitor() {
+        object : PsiRecursiveElementVisitor() {
             override fun visitElement(element: PsiElement) {
-                val graphKey = element.parentOfType<KtClass>() ?: file
+                val container = element.parentOfType<KtClass>() ?: file
                 if (element is KtNamedFunction) {
-                    addCalleeToParentInGraph(graphKey = graphKey, parent = element, callee = null)
+                    addCalleeToParentInGraph(graphKey = container, parent = element, callee = null)
                 }
                 if (element is KtCallExpression) {
-                    // todo make sure it's part of the file?
-                    val callee = element.getChildOfType<KtNameReferenceExpression>()?.references?.firstNotNullOfOrNull { it.resolve() as? KtFunction }
+                    val callee =
+                        element.getChildOfType<KtNameReferenceExpression>()?.references?.firstNotNullOfOrNull { it.resolve() as? KtFunction }
                     val parent = element.parentOfType<KtCallExpression>()
                         ?.getChildOfType<KtNameReferenceExpression>()
                         ?.references
                         ?.firstNotNullOfOrNull { it.resolve() as? KtFunction }
                         ?: element.parentOfType<KtNamedFunction>()
-                    if (callee != null && parent != null) {
-                        addCalleeToParentInGraph(graphKey = graphKey, parent = parent, callee = callee)
+                    val calleeContainer = callee?.parentOfType<KtClass>() ?: file
+                    if (callee != null && calleeContainer == container && parent != null) {
+                        addCalleeToParentInGraph(graphKey = container, parent = parent, callee = callee)
                     }
                 }
                 super.visitElement(element)
             }
-        }
-        visitor.visitElement(file)
+        }.visitElement(file)
     }
 
     private fun addCalleeToParentInGraph(
