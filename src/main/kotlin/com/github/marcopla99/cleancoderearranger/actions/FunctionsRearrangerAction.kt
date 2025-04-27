@@ -1,6 +1,6 @@
 package com.github.marcopla99.cleancoderearranger.actions
 
-import com.github.marcopla99.cleancoderearranger.FunctionCallGraphs
+import com.github.marcopla99.cleancoderearranger.graph.FunctionCallGraphs
 import com.github.marcopla99.cleancoderearranger.rearranger.GraphRearranger
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -20,7 +20,7 @@ class FunctionsRearrangerAction : AnAction() {
         val document = anActionEvent.getData(CommonDataKeys.EDITOR)?.document ?: return
         val documentManager = PsiDocumentManager.getInstance(project)
         val functionCallGraphs = FunctionCallGraphs(file)
-        val rearrangedFunctions = functionCallGraphs.graphs.map { graph -> GraphRearranger.rearrange(graph) }
+        val rearrangedFunctions = functionCallGraphs.graphs.values.map { graph -> GraphRearranger.rearrange(graph) }
         val roots = rearrangedFunctions.mapNotNull { it.firstOrNull() }
         val children = rearrangedFunctions.map { it.filterNot { function -> function in roots } }
         WriteCommandAction.runWriteCommandAction(project, "Rearrange Functions", "RearrangeFunctions", {

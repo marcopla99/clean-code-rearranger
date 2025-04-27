@@ -1,6 +1,6 @@
 package com.github.marcopla99.cleancoderearranger.rearranger
 
-import com.github.marcopla99.cleancoderearranger.Graph
+import com.github.marcopla99.cleancoderearranger.graph.Graph
 import org.jetbrains.kotlin.psi.KtFunction
 
 object GraphRearranger {
