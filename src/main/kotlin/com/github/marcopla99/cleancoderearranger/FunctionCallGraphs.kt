@@ -1,12 +1,12 @@
 package com.github.marcopla99.cleancoderearranger
 
 import com.github.marcopla99.cleancoderearranger.util.getCalleesInClass
-import com.github.marcopla99.cleancoderearranger.util.getCalleesInFile
 import com.github.marcopla99.cleancoderearranger.util.getSignature
-import org.jetbrains.kotlin.psi.KtClass
-import org.jetbrains.kotlin.psi.KtDeclaration
-import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.psi.KtFunction
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiRecursiveElementVisitor
+import com.intellij.psi.util.parentOfType
+import org.jetbrains.kotlin.psi.*
+import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 
 typealias Graph = Map<KtFunction, List<KtFunction>>
 
@@ -16,18 +16,33 @@ class FunctionCallGraphs(file: KtFile) {
 
     init {
         buildFromFile(file)
-        buildFromClasses(file)
+        // todo fix classes
+//        buildFromClasses(file)
     }
 
     private fun buildFromFile(file: KtFile) {
-        val functions = file.children.mapNotNull { it as? KtFunction }
-        val graph = buildGraph {
-            functions.forEach { function ->
-                val callees = function.getCalleesInFile(file = file)
-                put(function, get(function).orEmpty() + callees)
+        val visitor = object : PsiRecursiveElementVisitor() {
+            override fun visitElement(element: PsiElement) {
+                if (element is KtNamedFunction) {
+                    if (_graphs.isEmpty()) _graphs.add(mapOf(element to listOf()))
+                    _graphs[0] = _graphs[0] + (element to _graphs[0].getOrDefault(element, listOf()))
+                }
+                if (element is KtCallExpression) {
+                    // todo make sure it's part of the file
+                    val callee = element.getChildOfType<KtNameReferenceExpression>()?.references?.firstNotNullOfOrNull { it.resolve() as? KtFunction }
+                    val parent = element.parentOfType<KtCallExpression>()
+                        ?.getChildOfType<KtNameReferenceExpression>()
+                        ?.references
+                        ?.firstNotNullOfOrNull { it.resolve() as? KtFunction }
+                        ?: element.parentOfType<KtNamedFunction>()
+                    if (callee != null) {
+                        parent?.let { _graphs[0] = _graphs[0] + (parent to _graphs[0][parent].orEmpty() + callee) }
+                    }
+                }
+                super.visitElement(element)
             }
         }
-        if (graph.isNotEmpty()) _graphs.add(graph)
+        visitor.visitElement(file)
     }
 
     private fun buildFromClasses(file: KtFile) {

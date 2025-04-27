@@ -65,5 +65,22 @@ class FunctionCallGraphsTest: BasePlatformTestCase() {
         )
     }
 
+    fun testFileWithDSL() {
+        val ktFile = myFixture.configureByFile("FileWithDSL.kt") as KtFile
+
+        val functionCallGraphs = FunctionCallGraphs(ktFile)
+
+        assertEquals(
+            "[{" +
+                    "fun a(): Unit=[fun b(p1: () -> Unit): Unit, fun c(p1: () -> Unit): Unit], " +
+                    "fun b(p1: () -> Unit): Unit=[fun d(): Unit], " +
+                    "fun c(p1: () -> Unit): Unit=[fun e(): Unit], " +
+                    "fun d(): Unit=[], " +
+                    "fun e(): Unit=[]" +
+                    "}]",
+            functionCallGraphs.toString()
+        )
+    }
+
     override fun getTestDataPath() = "src/test/testData"
 }
