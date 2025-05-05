@@ -4,8 +4,11 @@ import com.github.marcopla99.cleancoderearranger.graph.FunctionCallGraphs
 import com.github.marcopla99.cleancoderearranger.rearranger.GraphRearranger
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.command.WriteCommandAction
+import com.intellij.openapi.editor.Document
+import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiElement
 import com.intellij.refactoring.extractMethod.newImpl.ExtractMethodHelper.addSiblingAfter
 import org.jetbrains.kotlin.psi.KtFile
@@ -15,6 +18,8 @@ class FunctionsRearrangerAction : AnAction() {
     override fun actionPerformed(anActionEvent: AnActionEvent) {
         val file = anActionEvent.getData(LangDataKeys.PSI_FILE) as? KtFile ?: return
         val project = anActionEvent.project ?: return
+        val document = anActionEvent.getData(CommonDataKeys.EDITOR)?.document ?: return
+        val documentManager = PsiDocumentManager.getInstance(project)
         val functionCallGraphs = FunctionCallGraphs(file)
         val rearrangedFunctions = functionCallGraphs.graphs.values.map { graph -> GraphRearranger.rearrange(graph) }
         val roots = rearrangedFunctions.mapNotNull { it.firstOrNull() }
@@ -29,6 +34,15 @@ class FunctionsRearrangerAction : AnAction() {
                     previous = previous.addSiblingAfter(function)
                 }
             }
+            documentManager.doPostponedOperationsAndUnblockDocument(document)
+            document.removeTrailingWhitespaces()
         }, file)
     }
+}
+
+private fun Document.removeTrailingWhitespaces() {
+    val contentLength = text.dropLastWhile { it == '\n' }.length
+    val requiredNewlines = 1
+    val startOffset = minOf(contentLength + requiredNewlines, textLength)
+    deleteString(startOffset, textLength)
 }

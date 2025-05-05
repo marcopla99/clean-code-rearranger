@@ -22,5 +22,11 @@ class FunctionsRearrangerActionTest : BasePlatformTestCase() {
         myFixture.checkResultByFile("output/ClassWithInitializer.kt")
     }
 
+    fun testWhitespaces() {
+        myFixture.configureByFile("input/Whitespaces.kt") as KtFile
+        myFixture.performEditorAction("com.github.marcopla99.cleancoderearranger.actions.FunctionsRearrangerAction")
+        myFixture.checkResultByFile("output/Whitespaces.kt")
+    }
+
     override fun getTestDataPath() = "src/test/testData"
 }
