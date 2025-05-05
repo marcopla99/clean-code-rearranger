@@ -22,10 +22,16 @@ class FunctionsRearrangerActionTest : BasePlatformTestCase() {
         myFixture.checkResultByFile("output/ClassWithInitializer.kt")
     }
 
-    fun testWhitespaces() {
-        myFixture.configureByFile("input/Whitespaces.kt") as KtFile
+    fun testFileWithManyTrailingWhitespaces() {
+        myFixture.configureByFile("input/FileWithManyTrailingWhitespaces.kt") as KtFile
         myFixture.performEditorAction("com.github.marcopla99.cleancoderearranger.actions.FunctionsRearrangerAction")
-        myFixture.checkResultByFile("output/Whitespaces.kt")
+        myFixture.checkResultByFile("output/FileWithManyTrailingWhitespaces.kt")
+    }
+
+    fun testFileWithNoTrailingWhitespaces() {
+        myFixture.configureByFile("input/FileWithNoTrailingWhitespaces.kt") as KtFile
+        myFixture.performEditorAction("com.github.marcopla99.cleancoderearranger.actions.FunctionsRearrangerAction")
+        myFixture.checkResultByFile("output/FileWithNoTrailingWhitespaces.kt")
     }
 
     override fun getTestDataPath() = "src/test/testData"
