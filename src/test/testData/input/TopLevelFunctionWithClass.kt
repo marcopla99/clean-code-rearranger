@@ -1,6 +1,8 @@
 private fun b() {}
+
 private class C {
     fun bar() {}
+
     fun foo() {
         bar()
     }

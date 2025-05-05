@@ -1,4 +1,5 @@
 private class C {
+
     fun foo() {
         bar()
     }

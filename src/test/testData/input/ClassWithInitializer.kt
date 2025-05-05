@@ -3,12 +3,15 @@ class C {
         a()
         b()
     }
+
     fun c() {
 
     }
+
     fun b() {
 
     }
+
     fun a() {
 
     }
