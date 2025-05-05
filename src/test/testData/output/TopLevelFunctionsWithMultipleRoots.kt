@@ -21,6 +21,7 @@ private fun a2() {
 }
 
 private fun b2() {
+
 }
 
 private fun a3() {
