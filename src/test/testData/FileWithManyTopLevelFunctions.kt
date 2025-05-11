@@ -5,6 +5,9 @@ fun foo(): Unit {
     bar()
 }
 
+fun e(): Unit {
+}
+
 fun d(): Unit {
     e()
 }
@@ -19,7 +22,4 @@ fun c(): Unit {
 }
 
 fun bar(): Unit {
-}
-
-fun e(): Unit {
 }
