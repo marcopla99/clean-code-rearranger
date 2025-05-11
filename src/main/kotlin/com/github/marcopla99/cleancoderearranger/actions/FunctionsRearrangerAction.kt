@@ -22,13 +22,13 @@ class FunctionsRearrangerAction : AnAction() {
         val documentManager = PsiDocumentManager.getInstance(project)
         val functionCallGraphs = FunctionCallGraphs(file)
         val rearrangedFunctions = functionCallGraphs.graphs.values.map { graph -> GraphRearranger.rearrange(graph) }
-        val roots = rearrangedFunctions.mapNotNull { it.firstOrNull() }
-        val children = rearrangedFunctions.map { it.filterNot { function -> function in roots } }
+        val tops = rearrangedFunctions.mapNotNull { it.firstOrNull() }
+        val bottoms = rearrangedFunctions.map { it.filterNot { function -> function in tops } }
         WriteCommandAction.runWriteCommandAction(project, "Rearrange Functions", "RearrangeFunctions", {
-            val childrenCopy = children.map { it.map(PsiElement::copy) }
-            children.flatten().forEach(KtFunction::delete)
-            roots.forEachIndexed { index, root ->
-                val elementsToInsertBack = childrenCopy[index]
+            val bottomsCopy = bottoms.map { it.map(PsiElement::copy) }
+            bottoms.flatten().forEach(KtFunction::delete)
+            tops.forEachIndexed { index, root ->
+                val elementsToInsertBack = bottomsCopy[index]
                 var previous: PsiElement = root
                 for (function in elementsToInsertBack) {
                     previous = previous.addSiblingAfter(function)
