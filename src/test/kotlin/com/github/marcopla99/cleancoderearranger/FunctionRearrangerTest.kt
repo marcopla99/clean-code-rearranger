@@ -2,7 +2,6 @@ package com.github.marcopla99.cleancoderearranger
 
 import com.github.marcopla99.cleancoderearranger.graph.FunctionCallGraphs
 import com.github.marcopla99.cleancoderearranger.rearranger.GraphRearranger
-import com.github.marcopla99.cleancoderearranger.util.getSignature
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import org.jetbrains.kotlin.psi.KtFile
 
@@ -15,7 +14,7 @@ class FunctionRearrangerTest: BasePlatformTestCase() {
         val rearrangedFunctions = functionCallGraphs.graphs.values.map { graph ->
             GraphRearranger.rearrange(graph)
         }
-        assertEquals("[]", rearrangedFunctions.map { functions -> functions.map { it.getSignature() } }.toString())
+        assertEquals("[]", rearrangedFunctions.map { functions -> functions.map { it.name } }.toString())
     }
 
     fun testFileWithSingleFunction() {
@@ -26,8 +25,8 @@ class FunctionRearrangerTest: BasePlatformTestCase() {
             GraphRearranger.rearrange(graph)
         }
         assertEquals(
-            "[[fun foo(a: Int, b: String): Unit]]",
-            rearrangedFunctions.map { functions -> functions.map { it.getSignature() } }.toString()
+            "[[foo]]",
+            rearrangedFunctions.map { functions -> functions.map { it.name } }.toString()
         )
     }
 
@@ -39,8 +38,8 @@ class FunctionRearrangerTest: BasePlatformTestCase() {
             GraphRearranger.rearrange(graph)
         }
         assertEquals(
-            "[[fun a(): Unit, fun b(): Unit, fun c(): Unit, fun d(): Unit]]",
-            rearrangedFunctions.map { functions -> functions.map { it.getSignature() } }.toString()
+            "[[a, b, c, d]]",
+            rearrangedFunctions.map { functions -> functions.map { it.name } }.toString()
         )
     }
 
@@ -52,7 +51,7 @@ class FunctionRearrangerTest: BasePlatformTestCase() {
             GraphRearranger.rearrange(graph)
         }
 
-        assertEquals("[fun a(): Unit, fun b(): Unit]", rearrangedFunctions.map { it.getSignature() }.toString())
+        assertEquals("[a, b]", rearrangedFunctions.map { it.name }.toString())
     }
 
     fun testRearrangeWithTopLevelFunctionSeparatedByClass() {
@@ -63,8 +62,8 @@ class FunctionRearrangerTest: BasePlatformTestCase() {
             GraphRearranger.rearrange(graph)
         }
         assertEquals(
-            "[[fun a(): Unit, fun b(): Unit], [fun foo(): Unit, fun bar(): Unit]]",
-            rearrangedFunctions.map { functions -> functions.map { it.getSignature() } }.toString()
+            "[[a, b], [foo, bar]]",
+            rearrangedFunctions.map { functions -> functions.map { it.name } }.toString()
         )
     }
 
@@ -76,10 +75,8 @@ class FunctionRearrangerTest: BasePlatformTestCase() {
             GraphRearranger.rearrange(graph)
         }
         assertEquals(
-            "[[fun foo(): Unit, fun bar(): Unit, " +
-                    "fun a(): Unit, fun b(): Unit, " +
-                    "fun c(): Unit, fun d(): Unit, fun e(): Unit]]",
-            rearrangedFunctions.map { functions -> functions.map { it.getSignature() } }.toString()
+            "[[foo, bar, a, b, c, d, e]]",
+            rearrangedFunctions.map { functions -> functions.map { it.name } }.toString()
         )
     }
 
@@ -91,8 +88,8 @@ class FunctionRearrangerTest: BasePlatformTestCase() {
             GraphRearranger.rearrange(graph)
         }
         assertEquals(
-            "[[fun a(): Unit, fun b(): Unit, fun c(): Unit]]",
-            rearrangedFunctions.map { functions -> functions.map { it.getSignature() } }.toString()
+            "[[a, b, c]]",
+            rearrangedFunctions.map { functions -> functions.map { it.name } }.toString()
         )
     }
 
