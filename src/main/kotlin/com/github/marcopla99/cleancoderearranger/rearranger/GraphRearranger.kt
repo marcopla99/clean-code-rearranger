@@ -9,13 +9,7 @@ object GraphRearranger {
         val result: LinkedHashSet<KtFunction> = LinkedHashSet()
         val roots = graph.findRoots()
         roots.forEach { root ->
-            val queue = ArrayDeque<KtFunction>()
-            queue.add(root)
-            while (queue.isNotEmpty()) {
-                val current = queue.removeFirst()
-                result.addOrReplace(current)
-                graph[current]?.forEach { child -> queue.add(child) }
-            }
+            graph.searchBreadthFirstStartingFrom(root) { visitedNode -> result.addOrReplace(visitedNode) }
         }
         return result.toList()
     }
@@ -26,6 +20,19 @@ private fun Graph.findRoots(): List<KtFunction> {
     val allChildren = this.values.flatten().toSet()
     val roots = allNodes - allChildren
     return roots.toList()
+}
+
+private fun Graph.searchBreadthFirstStartingFrom(
+    ktFunction: KtFunction,
+    onNodeVisited: (KtFunction) -> Unit
+) {
+    val queue = ArrayDeque<KtFunction>()
+    queue.add(ktFunction)
+    while (queue.isNotEmpty()) {
+        val current = queue.removeFirst()
+        onNodeVisited(current)
+        this[current]?.forEach { child -> queue.add(child) }
+    }
 }
 
 private fun LinkedHashSet<KtFunction>.addOrReplace(current: KtFunction) {
