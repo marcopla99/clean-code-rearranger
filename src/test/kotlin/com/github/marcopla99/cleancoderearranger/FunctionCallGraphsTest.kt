@@ -19,7 +19,7 @@ class FunctionCallGraphsTest: BasePlatformTestCase() {
 
         val functionCallGraphs = FunctionCallGraphs(ktFile)
 
-        assertEquals("[{fun foo(a: Int, b: String): Unit=[]}]", functionCallGraphs.toString())
+        assertEquals("[{foo=[]}]", functionCallGraphs.toString())
     }
 
     fun testFileWithTwoFunctions() {
@@ -27,7 +27,7 @@ class FunctionCallGraphsTest: BasePlatformTestCase() {
 
         val functionCallGraphs = FunctionCallGraphs(ktFile)
 
-        assertEquals("[{fun b(): Unit=[], fun a(): Unit=[fun b(): Unit]}]", functionCallGraphs.toString())
+        assertEquals("[{b=[], a=[b]}]", functionCallGraphs.toString())
     }
 
     fun testFileWithClass() {
@@ -35,10 +35,7 @@ class FunctionCallGraphsTest: BasePlatformTestCase() {
 
         val functionCallGraphs = FunctionCallGraphs(ktFile)
 
-        assertEquals(
-            "[{fun b(): Unit=[], fun a(): Unit=[fun b(): Unit]}]",
-            functionCallGraphs.toString()
-        )
+        assertEquals("[{b=[], a=[b]}]", functionCallGraphs.toString())
     }
 
     fun testFileWithFunctionsOutsideClass() {
@@ -46,13 +43,7 @@ class FunctionCallGraphsTest: BasePlatformTestCase() {
 
         val functionCallGraphs = FunctionCallGraphs(ktFile)
 
-        assertEquals(
-            "[" +
-                    "{fun b(): Unit=[], fun a(): Unit=[fun b(): Unit]}, " +
-                    "{fun d(): Unit=[], fun e(): Unit=[fun d(): Unit]}" +
-                    "]",
-            functionCallGraphs.toString()
-        )
+        assertEquals("[{b=[], a=[b]}, {d=[], e=[d]}]", functionCallGraphs.toString())
     }
 
     fun testOuterFunctionCalledFromClass() {
@@ -60,13 +51,7 @@ class FunctionCallGraphsTest: BasePlatformTestCase() {
 
         val functionCallGraphs = FunctionCallGraphs(ktFile)
 
-        assertEquals(
-            "[" +
-                    "{fun b(): Unit=[], fun a(): Unit=[fun b(): Unit]}, " +
-                    "{fun d(): Unit=[], fun e(): Unit=[fun d(): Unit]}" +
-                    "]",
-            functionCallGraphs.toString()
-        )
+        assertEquals("[{b=[], a=[b]}, {d=[], e=[d]}]", functionCallGraphs.toString())
     }
 
     fun testFileWithClassWithInitializer() {
@@ -74,10 +59,7 @@ class FunctionCallGraphsTest: BasePlatformTestCase() {
 
         val functionCallGraphs = FunctionCallGraphs(ktFile)
 
-        assertEquals(
-            "[{fun a(): Unit=[], fun b(): Unit=[], fun c(): Unit=[]}]",
-            functionCallGraphs.toString()
-        )
+        assertEquals("[{a=[], b=[], c=[]}]", functionCallGraphs.toString())
     }
 
     fun testFileWithDSL() {
@@ -85,16 +67,7 @@ class FunctionCallGraphsTest: BasePlatformTestCase() {
 
         val functionCallGraphs = FunctionCallGraphs(ktFile)
 
-        assertEquals(
-            "[{" +
-                    "fun a(): Unit=[fun b(p1: () -> Unit): Unit, fun c(p1: () -> Unit): Unit], " +
-                    "fun b(p1: () -> Unit): Unit=[fun d(): Unit], " +
-                    "fun c(p1: () -> Unit): Unit=[fun e(): Unit], " +
-                    "fun d(): Unit=[], " +
-                    "fun e(): Unit=[]" +
-                    "}]",
-            functionCallGraphs.toString()
-        )
+        assertEquals("[{a=[b, c], b=[d], c=[e], d=[], e=[]}]", functionCallGraphs.toString())
     }
 
     override fun getTestDataPath() = "src/test/testData"

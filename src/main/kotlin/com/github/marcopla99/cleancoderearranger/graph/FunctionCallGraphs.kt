@@ -1,6 +1,5 @@
 package com.github.marcopla99.cleancoderearranger.graph
 
-import com.github.marcopla99.cleancoderearranger.util.getSignature
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiRecursiveElementVisitor
 import com.intellij.psi.util.parentOfType
@@ -60,8 +59,8 @@ class FunctionCallGraphs(file: KtFile) {
             append("{")
             append(
                 graph.map { entry ->
-                    val key = entry.key.getSignature()
-                    val value = entry.value.joinToString { it.getSignature() }
+                    val key = entry.key.name
+                    val value = entry.value.joinToString { it.name ?: "<anonymous>" }
                     "$key=[$value]"
                 }.joinToString()
             )
