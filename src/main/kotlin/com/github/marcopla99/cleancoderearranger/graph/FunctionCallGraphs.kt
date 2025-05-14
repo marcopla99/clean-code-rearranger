@@ -27,15 +27,15 @@ class FunctionCallGraphs(file: KtFile) {
                     val callee =
                         element.getChildOfType<KtNameReferenceExpression>()?.references?.firstNotNullOfOrNull { it.resolve() as? KtFunction }
                     val calleeContainer = callee?.parentOfType<KtClass>() ?: file
-                    if (calleeContainer == container) {
+                    if ((callee?.containingFile as? KtFile) == file && calleeContainer == container) {
                         val parent = element.parentOfType<KtCallExpression>()
                             ?.getChildOfType<KtNameReferenceExpression>()
                             ?.references
                             ?.firstNotNullOfOrNull { it.resolve() as? KtFunction }
                             ?: element.parentOfType<KtNamedFunction>()
-                        if (callee != null && parent != null) {
+                        if (parent != null) {
                             addCalleeToParentInGraph(graphKey = container, parent = parent, callee = callee)
-                        } else if (callee != null && element.parentOfType<KtClassInitializer>() != null) {
+                        } else if (element.parentOfType<KtClassInitializer>() != null) {
                             addCalleeToParentInGraph(graphKey = container, parent = callee, callee = null)
                         }
                     }
