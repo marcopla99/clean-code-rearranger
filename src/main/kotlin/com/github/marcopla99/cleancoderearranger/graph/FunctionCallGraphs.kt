@@ -24,14 +24,11 @@ class FunctionCallGraphs(file: KtFile) {
                     addCalleeToParentInGraph(graphKey = container, parent = element, callee = null)
                 }
                 if (element is KtCallExpression) {
-                    val callee =
-                        element.getChildOfType<KtNameReferenceExpression>()?.references?.firstNotNullOfOrNull { it.resolve() as? KtFunction }
+                    val callee = element.getChildOfType<KtNameReferenceExpression>()
+                        ?.references?.firstNotNullOfOrNull { it.resolve() as? KtFunction }
                     val calleeContainer = callee?.parentOfType<KtClass>() ?: file
                     if ((callee?.containingFile as? KtFile) == file && calleeContainer == container) {
-                        val parent = element.parentOfType<KtCallExpression>()
-                            ?.getChildOfType<KtNameReferenceExpression>()
-                            ?.references
-                            ?.firstNotNullOfOrNull { it.resolve() as? KtFunction }
+                        val parent = element.getFirstKtFunctionParentInFile(file)
                             ?: element.parentOfType<KtNamedFunction>()
                         if (parent != null) {
                             addCalleeToParentInGraph(graphKey = container, parent = parent, callee = callee)
@@ -48,7 +45,7 @@ class FunctionCallGraphs(file: KtFile) {
     private fun addCalleeToParentInGraph(
         graphKey: KtDeclarationContainer,
         parent: KtFunction,
-        callee: KtFunction?
+        callee: KtFunction?,
     ) {
         val calleesInParent = _graphs[graphKey]?.get(parent).orEmpty().let { if (callee != null) it + callee else it }
         _graphs[graphKey] = _graphs[graphKey].orEmpty() + (parent to calleesInParent)
@@ -68,3 +65,16 @@ class FunctionCallGraphs(file: KtFile) {
         }
     } + "]"
 }
+
+private fun PsiElement.getFirstKtFunctionParentInFile(file: KtFile): KtFunction? {
+    var parent = getKtFunctionParent()
+    while (parent != null && parent.containingFile != file) {
+        parent = parent.getKtFunctionParent()
+    }
+    return parent
+}
+
+private fun PsiElement.getKtFunctionParent() = parentOfType<KtCallExpression>()
+    ?.getChildOfType<KtNameReferenceExpression>()
+    ?.references
+    ?.firstNotNullOfOrNull { it.resolve() as? KtFunction }

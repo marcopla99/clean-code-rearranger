@@ -78,5 +78,14 @@ class FunctionCallGraphsTest: BasePlatformTestCase() {
 
         assertEquals("[{a=[]}]", functionCallGraphs.toString())
     }
+
+    fun testFileWithOtherFileAndNestedCall() {
+        val ktFile = myFixture.configureByFile("FileReferencingAnotherFileAndNestedCall.kt") as KtFile
+        myFixture.createFile("OtherFile.kt", "public inline fun shouldNotBeIncluded(p: () -> Unit) {}")
+
+        val functionCallGraphs = FunctionCallGraphs(ktFile)
+
+        assertEquals("[{a=[b], b=[]}]", functionCallGraphs.toString())
+    }
     override fun getTestDataPath() = "src/test/testData"
 }
