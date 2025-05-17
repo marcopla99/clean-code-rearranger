@@ -24,6 +24,10 @@ class FunctionsRearrangerActionTest : BasePlatformTestCase() {
         checkFile("FileWithNoTrailingWhitespaces.kt")
     }
 
+    fun testInnerClass() {
+        checkFile("InnerClass.kt")
+    }
+
     override fun getTestDataPath() = "src/test/testData"
 
     private fun checkFile(fileName: String) {
