@@ -5,34 +5,30 @@ import org.jetbrains.kotlin.psi.KtFile
 
 class FunctionsRearrangerActionTest : BasePlatformTestCase() {
     fun testTopLevelFunctionWithMultipleRoots() {
-        myFixture.configureByFile("input/TopLevelFunctionsWithMultipleRoots.kt") as KtFile
-        myFixture.performEditorAction("com.github.marcopla99.cleancoderearranger.actions.FunctionsRearrangerAction")
-        myFixture.checkResultByFile("output/TopLevelFunctionsWithMultipleRoots.kt")
+        checkFile("TopLevelFunctionsWithMultipleRoots.kt")
     }
 
     fun testTopLevelFunctionWithClass() {
-        myFixture.configureByFile("input/TopLevelFunctionWithClass.kt") as KtFile
-        myFixture.performEditorAction("com.github.marcopla99.cleancoderearranger.actions.FunctionsRearrangerAction")
-        myFixture.checkResultByFile("output/TopLevelFunctionWithClass.kt")
+        checkFile("TopLevelFunctionWithClass.kt")
     }
 
     fun testClassWithInitializer() {
-        myFixture.configureByFile("input/ClassWithInitializer.kt") as KtFile
-        myFixture.performEditorAction("com.github.marcopla99.cleancoderearranger.actions.FunctionsRearrangerAction")
-        myFixture.checkResultByFile("output/ClassWithInitializer.kt")
+        checkFile("ClassWithInitializer.kt")
     }
 
     fun testFileWithManyTrailingWhitespaces() {
-        myFixture.configureByFile("input/FileWithManyTrailingWhitespaces.kt") as KtFile
-        myFixture.performEditorAction("com.github.marcopla99.cleancoderearranger.actions.FunctionsRearrangerAction")
-        myFixture.checkResultByFile("output/FileWithManyTrailingWhitespaces.kt")
+        checkFile("FileWithManyTrailingWhitespaces.kt")
     }
 
     fun testFileWithNoTrailingWhitespaces() {
-        myFixture.configureByFile("input/FileWithNoTrailingWhitespaces.kt") as KtFile
-        myFixture.performEditorAction("com.github.marcopla99.cleancoderearranger.actions.FunctionsRearrangerAction")
-        myFixture.checkResultByFile("output/FileWithNoTrailingWhitespaces.kt")
+        checkFile("FileWithNoTrailingWhitespaces.kt")
     }
 
     override fun getTestDataPath() = "src/test/testData"
+
+    private fun checkFile(fileName: String) {
+        myFixture.configureByFile("input/$fileName") as KtFile
+        myFixture.performEditorAction("com.github.marcopla99.cleancoderearranger.actions.FunctionsRearrangerAction")
+        myFixture.checkResultByFile("output/$fileName")
+    }
 }
