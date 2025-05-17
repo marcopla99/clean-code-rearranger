@@ -4,8 +4,8 @@ import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import org.jetbrains.kotlin.psi.KtFile
 
 class FunctionsRearrangerActionTest : BasePlatformTestCase() {
-    fun testTopLevelFunctionWithMultipleRoots() {
-        checkFile("TopLevelFunctionsWithMultipleRoots.kt")
+    fun testFunctionsWithMultipleRoots() {
+        checkFile("FunctionsWithMultipleRoots.kt")
     }
 
     fun testTopLevelFunctionWithClass() {
@@ -16,12 +16,12 @@ class FunctionsRearrangerActionTest : BasePlatformTestCase() {
         checkFile("ClassWithInitializer.kt")
     }
 
-    fun testFileWithManyTrailingWhitespaces() {
-        checkFile("FileWithManyTrailingWhitespaces.kt")
+    fun testManyTrailingWhitespaces() {
+        checkFile("ManyTrailingWhitespaces.kt")
     }
 
-    fun testFileWithNoTrailingWhitespaces() {
-        checkFile("FileWithNoTrailingWhitespaces.kt")
+    fun testNoTrailingWhitespaces() {
+        checkFile("NoTrailingWhitespaces.kt")
     }
 
     fun testInnerClass() {
