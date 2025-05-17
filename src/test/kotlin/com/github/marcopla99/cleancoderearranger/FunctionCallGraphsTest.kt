@@ -6,44 +6,36 @@ import org.jetbrains.kotlin.psi.KtFile
 
 class FunctionCallGraphsTest: BasePlatformTestCase() {
 
-    fun testFileWithoutFunctions() {
-        val ktFile = myFixture.configureByFile("EmptyFile.kt") as KtFile
+    fun testEmpty() {
+        val ktFile = myFixture.configureByFile("Empty.kt") as KtFile
 
         val functionCallGraphs = FunctionCallGraphs(ktFile)
 
         assertEquals("[]", functionCallGraphs.toString())
     }
 
-    fun testFileWithOneFunction() {
-        val ktFile = myFixture.configureByFile("FileWithOneFunction.kt") as KtFile
+    fun testOneFunction() {
+        val ktFile = myFixture.configureByFile("OneFunction.kt") as KtFile
 
         val functionCallGraphs = FunctionCallGraphs(ktFile)
 
         assertEquals("[{foo=[]}]", functionCallGraphs.toString())
     }
 
-    fun testFileWithTwoFunctions() {
-        val ktFile = myFixture.configureByFile("FileWithTwoFunctions.kt") as KtFile
+    fun testTwoFunctions() {
+        val ktFile = myFixture.configureByFile("TwoFunctions.kt") as KtFile
 
         val functionCallGraphs = FunctionCallGraphs(ktFile)
 
         assertEquals("[{b=[], a=[b]}]", functionCallGraphs.toString())
     }
 
-    fun testFileWithClass() {
-        val ktFile = myFixture.configureByFile("FileWithClass.kt") as KtFile
+    fun testWithinClass() {
+        val ktFile = myFixture.configureByFile("WithinClass.kt") as KtFile
 
         val functionCallGraphs = FunctionCallGraphs(ktFile)
 
         assertEquals("[{b=[], a=[b]}]", functionCallGraphs.toString())
-    }
-
-    fun testFileWithFunctionsOutsideClass() {
-        val ktFile = myFixture.configureByFile("FunctionsOutsideClass.kt") as KtFile
-
-        val functionCallGraphs = FunctionCallGraphs(ktFile)
-
-        assertEquals("[{b=[], a=[b]}, {d=[], e=[d]}]", functionCallGraphs.toString())
     }
 
     fun testOuterFunctionCalledFromClass() {
@@ -54,16 +46,24 @@ class FunctionCallGraphsTest: BasePlatformTestCase() {
         assertEquals("[{b=[], a=[b]}, {d=[], e=[d]}]", functionCallGraphs.toString())
     }
 
-    fun testFileWithClassWithInitializer() {
-        val ktFile = myFixture.configureByFile("FileWithClassWithInitializer.kt") as KtFile
+    fun testClassWithInitializer() {
+        val ktFile = myFixture.configureByFile("ClassWithInitializer.kt") as KtFile
 
         val functionCallGraphs = FunctionCallGraphs(ktFile)
 
         assertEquals("[{a=[], b=[], c=[]}]", functionCallGraphs.toString())
     }
 
-    fun testFileWithDSL() {
-        val ktFile = myFixture.configureByFile("FileWithDSL.kt") as KtFile
+    fun testFunctionsOutsideClass() {
+        val ktFile = myFixture.configureByFile("FunctionsOutsideClass.kt") as KtFile
+
+        val functionCallGraphs = FunctionCallGraphs(ktFile)
+
+        assertEquals("[{b=[], a=[b]}, {d=[], e=[d]}]", functionCallGraphs.toString())
+    }
+
+    fun testDomainSpecificLanguage() {
+        val ktFile = myFixture.configureByFile("DomainSpecificLanguage.kt") as KtFile
 
         val functionCallGraphs = FunctionCallGraphs(ktFile)
 
@@ -72,7 +72,7 @@ class FunctionCallGraphsTest: BasePlatformTestCase() {
 
     fun testFileWithOtherFile() {
         val ktFile = myFixture.configureByFile("FileReferencingAnotherFile.kt") as KtFile
-        myFixture.createFile("OtherFile.kt", "public inline fun shouldNotBeIncluded() {}")
+        myFixture.createFile("AnotherFile.kt", "public inline fun shouldNotBeIncluded() {}")
 
         val functionCallGraphs = FunctionCallGraphs(ktFile)
 
@@ -88,12 +88,13 @@ class FunctionCallGraphsTest: BasePlatformTestCase() {
         assertEquals("[{a=[b], b=[]}]", functionCallGraphs.toString())
     }
 
-    fun testFileWithFunctionWithExpressionBody() {
-        val ktFile = myFixture.configureByFile("FileFunctionWithExpressionBody.kt") as KtFile
+    fun testFunctionWithExpressionBody() {
+        val ktFile = myFixture.configureByFile("FunctionWithExpressionBody.kt") as KtFile
 
         val functionCallGraphs = FunctionCallGraphs(ktFile)
 
         assertEquals("[{a=[b], b=[]}]", functionCallGraphs.toString())
     }
+
     override fun getTestDataPath() = "src/test/testData"
 }
