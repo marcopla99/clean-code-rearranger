@@ -30,7 +30,7 @@ class FunctionCallGraphs(file: KtFile) {
                     if ((callee?.containingFile as? KtFile) == file && calleeContainer == container) {
                         val parent = element.getFirstKtFunctionParentInFile(file)
                             ?: element.parentOfType<KtNamedFunction>()
-                        if (parent != null) {
+                        if (parent != null && callee != parent) {
                             addCalleeToParentInGraph(graphKey = container, parent = parent, callee = callee)
                         } else if (element.parentOfType<KtClassInitializer>() != null) {
                             addCalleeToParentInGraph(graphKey = container, parent = callee, callee = null)

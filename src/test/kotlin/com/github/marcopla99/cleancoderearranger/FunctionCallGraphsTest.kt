@@ -96,5 +96,13 @@ class FunctionCallGraphsTest: BasePlatformTestCase() {
         assertEquals("[{a=[b], b=[]}]", functionCallGraphs.toString())
     }
 
+    fun testRecursion() {
+        val ktFile = myFixture.configureByFile("Recursion.kt") as KtFile
+
+        val functionCallGraphs = FunctionCallGraphs(ktFile)
+
+        assertEquals("[{a=[b], b=[]}]", functionCallGraphs.toString())
+    }
+
     override fun getTestDataPath() = "src/test/testData"
 }
