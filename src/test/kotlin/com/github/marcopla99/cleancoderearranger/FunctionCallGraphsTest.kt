@@ -87,5 +87,13 @@ class FunctionCallGraphsTest: BasePlatformTestCase() {
 
         assertEquals("[{a=[b], b=[]}]", functionCallGraphs.toString())
     }
+
+    fun testFileWithFunctionWithExpressionBody() {
+        val ktFile = myFixture.configureByFile("FileFunctionWithExpressionBody.kt") as KtFile
+
+        val functionCallGraphs = FunctionCallGraphs(ktFile)
+
+        assertEquals("[{a=[b], b=[]}]", functionCallGraphs.toString())
+    }
     override fun getTestDataPath() = "src/test/testData"
 }
