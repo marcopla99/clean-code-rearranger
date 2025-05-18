@@ -2,10 +2,8 @@ package com.github.marcopla99.cleancoderearranger.actions
 
 import com.github.marcopla99.cleancoderearranger.graph.FunctionCallGraphs
 import com.github.marcopla99.cleancoderearranger.rearranger.GraphRearranger
-import com.intellij.openapi.actionSystem.AnAction
-import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.CommonDataKeys
-import com.intellij.openapi.actionSystem.LangDataKeys
+import com.intellij.lang.Language
+import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.editor.Document
 import com.intellij.psi.PsiDocumentManager
@@ -15,6 +13,16 @@ import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtFunction
 
 class FunctionsRearrangerAction : AnAction() {
+    override fun update(anActionEvent: AnActionEvent) {
+        val file = anActionEvent.getData(LangDataKeys.PSI_FILE)
+        val enabled = file != null && file.language.`is`(Language.findLanguageByID("kotlin")) && file.isWritable
+        anActionEvent.presentation.isEnabled = enabled
+    }
+
+    override fun getActionUpdateThread(): ActionUpdateThread {
+        return ActionUpdateThread.BGT
+    }
+
     override fun actionPerformed(anActionEvent: AnActionEvent) {
         val file = anActionEvent.getData(LangDataKeys.PSI_FILE) as? KtFile ?: return
         val project = anActionEvent.project ?: return
