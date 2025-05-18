@@ -7,16 +7,6 @@
     <depends>com.intellij.modules.platform</depends>
     <depends>org.jetbrains.kotlin</depends>
 
-    <resource-bundle>messages.MyBundle</resource-bundle>
-
-    <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.marcopla99.cleancoderearranger.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-    </extensions>
-
-    <applicationListeners>
-        <listener class="com.github.marcopla99.cleancoderearranger.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
-    </applicationListeners>
-
     <actions>
         <action id="com.github.marcopla99.cleancoderearranger.actions.FunctionsRearrangerAction"
                 class="com.github.marcopla99.cleancoderearranger.actions.FunctionsRearrangerAction"
