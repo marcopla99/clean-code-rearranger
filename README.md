@@ -1,4 +1,4 @@
-# clean-code-rearranger
+# Kotlin Clean Code Rearranger
 
 ![Build](https://github.com/marcopla99/clean-code-rearranger/workflows/Build/badge.svg)
 [![Version](https://img.shields.io/jetbrains/plugin/v/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
@@ -28,7 +28,7 @@ To keep everything working, do not remove `<!-- ... -->` sections.
 
 - Using the IDE built-in plugin system:
   
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "clean-code-rearranger"</kbd> >
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Kotlin Clean Code Rearranger"</kbd> >
   <kbd>Install</kbd>
   
 - Manually:

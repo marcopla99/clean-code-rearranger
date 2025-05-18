@@ -1,6 +1,6 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
-# clean-code-rearranger Changelog
+# Kotlin Clean Code Rearranger Changelog
 
 ## [Unreleased]
 ### Added
