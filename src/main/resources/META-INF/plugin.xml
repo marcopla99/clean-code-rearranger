@@ -3,16 +3,17 @@
     <id>com.github.marcopla99.cleancoderearranger</id>
     <name>Kotlin Clean Code Rearranger</name>
     <vendor>marcopla99</vendor>
-
     <depends>com.intellij.modules.platform</depends>
     <depends>org.jetbrains.kotlin</depends>
-
-    <actions>
-        <action id="com.github.marcopla99.cleancoderearranger.actions.FunctionsRearrangerAction"
-                class="com.github.marcopla99.cleancoderearranger.actions.FunctionsRearrangerAction"
-                text="RearrangeFunctions" description="Rearrange Kotlin function according to the Step-Down rule">
-            <add-to-group group-id="EditMenu" anchor="first"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt L" second-keystroke="shift ctrl alt L"/>
-        </action>
-    </actions>
+        <actions>
+            <action
+                    id="com.github.marcopla99.cleancoderearranger.actions.FunctionsRearrangerAction"
+                    class="com.github.marcopla99.cleancoderearranger.actions.FunctionsRearrangerAction"
+                    text="Rearrange Functions"
+                    description="Rearrange Kotlin function according to the Step-Down rule">
+                <add-to-group
+                        group-id="CodeFormatGroup"
+                        anchor="last"/>
+            </action>
+        </actions>
 </idea-plugin>

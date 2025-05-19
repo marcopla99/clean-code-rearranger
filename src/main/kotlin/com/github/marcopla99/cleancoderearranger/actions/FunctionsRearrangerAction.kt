@@ -32,7 +32,7 @@ class FunctionsRearrangerAction : AnAction() {
         val rearrangedFunctions = functionCallGraphs.graphs.values.map { graph -> GraphRearranger.rearrange(graph) }
         val tops = rearrangedFunctions.mapNotNull { it.firstOrNull() }
         val bottoms = rearrangedFunctions.map { it.filterNot { function -> function in tops } }
-        WriteCommandAction.runWriteCommandAction(project, "Rearrange Functions", "RearrangeFunctions", {
+        WriteCommandAction.runWriteCommandAction(project, null, null, {
             val bottomsCopy = bottoms.map { it.map(PsiElement::copy) }
             bottoms.flatten().forEach(KtFunction::delete)
             tops.forEachIndexed { index, root ->
