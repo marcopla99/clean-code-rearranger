@@ -19,14 +19,14 @@ class FunctionCallGraphs(file: KtFile) {
     private fun buildFromFile(file: KtFile) {
         object : PsiRecursiveElementVisitor() {
             override fun visitElement(element: PsiElement) {
-                val container = element.parentOfType<KtClass>() ?: file
+                val container = element.parentOfType<KtClassBody>() ?: file
                 if (element is KtNamedFunction) {
                     addCalleeToParentInGraph(graphKey = container, parent = element, callee = null)
                 }
                 if (element is KtCallExpression) {
                     val callee = element.getChildOfType<KtNameReferenceExpression>()
                         ?.references?.firstNotNullOfOrNull { it.resolve() as? KtFunction }
-                    val calleeContainer = callee?.parentOfType<KtClass>() ?: file
+                    val calleeContainer = callee?.parentOfType<KtClassBody>() ?: file
                     if ((callee?.containingFile as? KtFile) == file && calleeContainer == container) {
                         val parent = element.getFirstKtFunctionParentInFile(file)
                             ?: element.parentOfType<KtNamedFunction>()
