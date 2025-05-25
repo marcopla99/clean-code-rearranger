@@ -1,6 +1,5 @@
 package com.github.marcopla99.cleancoderearranger
 
-import com.github.marcopla99.cleancoderearranger.graph.FunctionCallGraphs
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import org.jetbrains.kotlin.psi.KtFile
 

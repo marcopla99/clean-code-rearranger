@@ -1,7 +1,5 @@
-package com.github.marcopla99.cleancoderearranger.actions
+package com.github.marcopla99.cleancoderearranger
 
-import com.github.marcopla99.cleancoderearranger.graph.FunctionCallGraphs
-import com.github.marcopla99.cleancoderearranger.rearranger.GraphRearranger
 import com.intellij.lang.Language
 import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.command.WriteCommandAction

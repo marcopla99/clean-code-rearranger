@@ -1,4 +1,4 @@
-package com.github.marcopla99.cleancoderearranger.graph
+package com.github.marcopla99.cleancoderearranger
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiRecursiveElementVisitor

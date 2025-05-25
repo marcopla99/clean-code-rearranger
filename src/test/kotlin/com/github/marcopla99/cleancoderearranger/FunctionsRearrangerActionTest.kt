@@ -32,7 +32,7 @@ class FunctionsRearrangerActionTest : BasePlatformTestCase() {
 
     private fun checkFile(fileName: String) {
         myFixture.configureByFile("input/$fileName") as KtFile
-        myFixture.performEditorAction("com.github.marcopla99.cleancoderearranger.actions.FunctionsRearrangerAction")
+        myFixture.performEditorAction("com.github.marcopla99.cleancoderearranger.FunctionsRearrangerAction")
         myFixture.checkResultByFile("output/$fileName")
     }
 }
