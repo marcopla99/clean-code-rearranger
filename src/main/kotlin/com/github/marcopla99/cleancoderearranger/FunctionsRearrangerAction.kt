@@ -55,11 +55,11 @@ private fun Document.removeBlankLinesAroundFunctions(functions: List<KtFunction>
         val prevSibling = (it.prevSibling as? PsiWhiteSpace)
         val nextSibling = (it.nextSibling as? PsiWhiteSpace)
         if (prevSibling is PsiWhiteSpace) {
-            deleteString(prevSibling.textRange.startOffset, prevSibling.textRange.endOffset)
+            replaceString(prevSibling.textRange.startOffset, prevSibling.textRange.endOffset, "\n")
             documentManager.commitDocument(this)
         }
         if (nextSibling is PsiWhiteSpace) {
-            deleteString(nextSibling.textRange.startOffset, nextSibling.textRange.endOffset)
+            replaceString(nextSibling.textRange.startOffset, nextSibling.textRange.endOffset, "\n")
             documentManager.commitDocument(this)
         }
     }

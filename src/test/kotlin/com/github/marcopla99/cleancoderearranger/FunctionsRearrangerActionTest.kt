@@ -32,6 +32,10 @@ class FunctionsRearrangerActionTest : BasePlatformTestCase() {
         checkFile("AlreadyArrangedClass.kt")
     }
 
+    fun testFunctionWithExpressionBody() {
+        checkFile("FunctionWithExpressionBody.kt")
+    }
+
     override fun getTestDataPath() = "src/test/testData"
 
     private fun checkFile(fileName: String) {
