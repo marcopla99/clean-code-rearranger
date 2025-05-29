@@ -6,6 +6,8 @@ import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.editor.Document
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiWhiteSpace
+import com.intellij.psi.codeStyle.CodeStyleManager
 import com.intellij.refactoring.extractMethod.newImpl.ExtractMethodHelper.addSiblingAfter
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtFunction
@@ -31,6 +33,7 @@ class FunctionsRearrangerAction : AnAction() {
         val tops = rearrangedFunctions.mapNotNull { it.firstOrNull() }
         val bottoms = rearrangedFunctions.map { it.filterNot { function -> function in tops } }
         WriteCommandAction.runWriteCommandAction(project, null, null, {
+            document.removeBlankLinesAroundFunctions(rearrangedFunctions.flatten(), documentManager)
             val bottomsCopy = bottoms.map { it.map(PsiElement::copy) }
             bottoms.flatten().forEach(KtFunction::delete)
             tops.forEachIndexed { index, root ->
@@ -41,14 +44,23 @@ class FunctionsRearrangerAction : AnAction() {
                 }
             }
             documentManager.doPostponedOperationsAndUnblockDocument(document)
-            document.removeTrailingWhitespaces()
+            documentManager.commitDocument(document)
+            CodeStyleManager.getInstance(project).reformat(file)
         }, file)
     }
 }
 
-private fun Document.removeTrailingWhitespaces() {
-    val contentLength = text.dropLastWhile { it == '\n' }.length
-    val requiredNewlines = 1
-    val startOffset = minOf(contentLength + requiredNewlines, textLength)
-    deleteString(startOffset, textLength)
+private fun Document.removeBlankLinesAroundFunctions(functions: List<KtFunction>, documentManager: PsiDocumentManager) {
+    functions.forEach {
+        val prevSibling = (it.prevSibling as? PsiWhiteSpace)
+        val nextSibling = (it.nextSibling as? PsiWhiteSpace)
+        if (prevSibling is PsiWhiteSpace) {
+            deleteString(prevSibling.textRange.startOffset, prevSibling.textRange.endOffset)
+            documentManager.commitDocument(this)
+        }
+        if (nextSibling is PsiWhiteSpace) {
+            deleteString(nextSibling.textRange.startOffset, nextSibling.textRange.endOffset)
+            documentManager.commitDocument(this)
+        }
+    }
 }

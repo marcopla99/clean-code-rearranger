@@ -28,6 +28,10 @@ class FunctionsRearrangerActionTest : BasePlatformTestCase() {
         checkFile("InnerClass.kt")
     }
 
+    fun testAlreadyArrangedClass() {
+        checkFile("AlreadyArrangedClass.kt")
+    }
+
     override fun getTestDataPath() = "src/test/testData"
 
     private fun checkFile(fileName: String) {

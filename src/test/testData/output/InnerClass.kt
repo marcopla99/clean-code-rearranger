@@ -1,7 +1,5 @@
 private class Class {
-
     inner class InnerClass {
-
         private fun a1() {
             b1()
         }
