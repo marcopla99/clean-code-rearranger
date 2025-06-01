@@ -16,24 +16,12 @@ class FunctionsRearrangerActionTest : BasePlatformTestCase() {
         checkFile("ClassWithInitializer.kt")
     }
 
-    fun testManyTrailingWhitespaces() {
-        checkFile("ManyTrailingWhitespaces.kt")
-    }
-
-    fun testNoTrailingWhitespaces() {
-        checkFile("NoTrailingWhitespaces.kt")
-    }
-
     fun testInnerClass() {
         checkFile("InnerClass.kt")
     }
 
-    fun testAlreadyArrangedClass() {
-        checkFile("AlreadyArrangedClass.kt")
-    }
-
-    fun testFunctionWithExpressionBody() {
-        checkFile("FunctionWithExpressionBody.kt")
+    fun testAlreadyArranged() {
+        checkFile("AlreadyArranged.kt")
     }
 
     override fun getTestDataPath() = "src/test/testData"

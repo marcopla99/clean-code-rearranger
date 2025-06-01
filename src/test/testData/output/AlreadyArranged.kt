@@ -1,3 +1,11 @@
+private fun foo() {
+    bar()
+}
+
+private fun bar() {
+
+}
+
 class C {
     fun a() {
         b()
@@ -6,4 +14,5 @@ class C {
     fun b() {
 
     }
+
 }
