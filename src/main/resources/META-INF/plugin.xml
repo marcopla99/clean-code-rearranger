@@ -5,15 +5,17 @@
     <vendor>marcopla99</vendor>
     <depends>com.intellij.modules.platform</depends>
     <depends>org.jetbrains.kotlin</depends>
-        <actions>
-            <action
-                    id="com.github.marcopla99.cleancoderearranger.FunctionsRearrangerAction"
-                    class="com.github.marcopla99.cleancoderearranger.FunctionsRearrangerAction"
-                    text="Rearrange Functions"
-                    description="Rearrange Kotlin function according to the Step-Down rule">
-                <add-to-group
-                        group-id="CodeFormatGroup"
-                        anchor="last"/>
-            </action>
-        </actions>
+    <actions>
+        <action
+                id="com.github.marcopla99.cleancoderearranger.FunctionsRearrangerAction"
+                class="com.github.marcopla99.cleancoderearranger.FunctionsRearrangerAction"
+                text="Rearrange Functions"
+                description="Rearrange Kotlin function according to the Step-Down rule">
+            <add-to-group
+                    group-id="CodeFormatGroup"
+                    anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt shift R"/>
+            <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta alt shift R"/>
+        </action>
+    </actions>
 </idea-plugin>
