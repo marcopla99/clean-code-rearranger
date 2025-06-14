@@ -1,10 +1,12 @@
 package com.github.marcopla99.cleancoderearranger
 
+import com.intellij.codeInsight.actions.ReformatCodeProcessor
 import com.intellij.lang.Language
 import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
 import com.intellij.refactoring.extractMethod.newImpl.ExtractMethodHelper.addSiblingAfter
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtFunction
@@ -40,11 +42,11 @@ class FunctionsRearrangerAction : AnAction() {
                 }
             }
             documentManager.doPostponedOperationsAndUnblockDocument(document)
-            anActionEvent.reformatWithUserPreferences()
+            anActionEvent.reformatWithUserPreferences(file)
         }, file)
     }
 }
 
-private fun AnActionEvent.reformatWithUserPreferences() {
-    ActionManager.getInstance().getAction("ReformatCode")?.actionPerformed(this)
+private fun AnActionEvent.reformatWithUserPreferences(file: PsiFile) {
+    ReformatCodeProcessor(project, file, null, false).run()
 }
