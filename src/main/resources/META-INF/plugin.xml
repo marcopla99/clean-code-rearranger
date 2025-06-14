@@ -6,6 +6,9 @@
     <depends>com.intellij.modules.platform</depends>
     <depends>org.jetbrains.kotlin</depends>
     <depends>com.intellij.modules.java</depends>
+    <extensions defaultExtensionNs="org.jetbrains.kotlin">
+        <supportsKotlinPluginMode supportsK2="true" />
+    </extensions>
     <actions>
         <action
                 id="com.github.marcopla99.cleancoderearranger.FunctionsRearrangerAction"
