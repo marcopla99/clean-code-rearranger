@@ -78,6 +78,8 @@ jobs:
       # Build plugin
       - name: Build plugin
         run: ./gradlew buildPlugin
+        env:
+          GRADLE_OPTS: -Djava.awt.headless=true
 
       # Prepare plugin archive content for creating artifact
       - name: Prepare Plugin Artifact
