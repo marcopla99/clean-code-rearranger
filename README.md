@@ -6,8 +6,8 @@ Rearranges functions in Kotlin files and classes according to the Robert C. Mart
 Available under `Code | Rearrange Functions`.
 
 Default shortcuts: 
-- <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>R</kbd> (Windows/Linux)
-- <kbd>⌘</kbd><kbd>⌥</kbd><kbd>⇧</kbd><kbd>R</kbd> (macOS)
+- <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> (Windows/Linux)
+- <kbd>⌘</kbd>+<kbd>⌥</kbd>+<kbd>⇧</kbd>+<kbd>R</kbd> (macOS)
 <!-- Plugin description end -->
 
 ## Installation
