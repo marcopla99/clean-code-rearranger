@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <linearGradient id="ff7f52ff" bx:pinned="true" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1, 0, 0, 1, 72.525772, 374.358566)">
+      <stop style="stop-color: rgb(208, 208, 208);"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="315.133" y1="74.085" x2="315.133" y2="97.192" id="gradient-0" gradientTransform="matrix(0.060759, 0.998153, -12.777526, 0.777781, 1379.016526, -285.844204)">
+      <stop offset="0" style="stop-color: rgb(229, 72, 87);"/>
+      <stop offset="1" style="stop-color: rgb(200, 17, 226);"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="303.915" y1="119.384" x2="303.915" y2="142.491" id="gradient-1" gradientTransform="matrix(-0.058803, -0.998269, 12.573784, -0.74066, -1324.700428, 531.948786)">
+      <stop offset="0" style="stop-color: rgb(127, 82, 255);"/>
+      <stop offset="1" style="stop-color: rgb(69, 226, 102);"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="315.133" y1="74.085" x2="315.133" y2="97.192" id="gradient-2" gradientTransform="matrix(0.060759, 0.998153, -12.777526, 0.777781, 1379.016479, -285.844208)">
+      <stop offset="0" style="stop-color: rgb(229, 72, 87);"/>
+      <stop offset="1" style="stop-color: rgb(200, 17, 226);"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="315.133" y1="74.085" x2="315.133" y2="97.192" id="gradient-3" gradientTransform="matrix(0.060759, 0.998153, -12.777526, 0.777781, 1278.246216, -168.385925)">
+      <stop offset="0" style="stop-color: rgb(229, 72, 87);"/>
+      <stop offset="1" style="stop-color: rgb(200, 17, 226);"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="303.915" y1="119.384" x2="303.915" y2="142.491" id="gradient-4" gradientTransform="matrix(-0.065646, -0.997843, 12.666421, -0.833298, -1335.285645, 543.948792)">
+      <stop offset="0" style="stop-color: rgb(127, 82, 255);"/>
+      <stop offset="1" style="stop-color: rgb(200, 17, 226);"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="303.915" y1="119.384" x2="303.915" y2="142.491" id="gradient-5" gradientTransform="matrix(-0.065646, -0.997843, 12.666421, -0.833298, -1436.055523, 778.865356)">
+      <stop offset="0" style="stop-color: rgb(127, 82, 255);"/>
+      <stop offset="1" style="stop-color: rgb(69, 226, 102);"/>
+    </linearGradient>
+  </defs>
+  <rect style="stroke: rgb(0, 0, 0); fill: url(&quot;#gradient-0&quot;);" y="85.045" width="302.31" height="23.107" rx="5" ry="5" x="152.76"/>
+  <g>
+    <rect style="stroke: rgb(0, 0, 0); fill: url(&quot;#ff7f52ff&quot;);" x="51.99" y="50.706" width="302.31" height="23.107" rx="5" ry="5"/>
+    <rect style="stroke: rgb(0, 0, 0); fill: url(&quot;#gradient-2&quot;);" y="85.045" width="302.31" height="23.107" rx="5" ry="5" x="152.76"/>
+    <rect style="stroke: rgb(0, 0, 0); fill: url(&quot;#gradient-4&quot;);" x="152.76" y="119.384" width="302.31" height="23.107" rx="5" ry="5"/>
+  </g>
+  <rect style="stroke: rgb(0, 0, 0); fill: url(&quot;#gradient-1&quot;);" x="152.76" y="119.384" width="302.31" height="23.107" rx="5" ry="5"/>
+  <g transform="matrix(1, 0, 0, 1, 0, -4.011006)">
+    <rect style="stroke: rgb(0, 0, 0); fill: url(&quot;#gradient-3&quot;);" y="202.503" width="302.31" height="23.107" rx="5" ry="5" x="51.99"/>
+    <rect style="stroke: rgb(0, 0, 0); fill: url(&quot;#ff7f52ff&quot;);" x="152.76" y="240.854" width="302.31" height="23.107" rx="5" ry="5"/>
+    <rect style="stroke: rgb(0, 0, 0); fill: url(&quot;#ff7f52ff&quot;);" x="152.76" y="279.204" width="302.31" height="23.107" rx="5" ry="5"/>
+  </g>
+  <rect style="stroke: rgb(0, 0, 0); fill: url(&quot;#gradient-5&quot;);" x="51.99" y="354.301" width="302.31" height="23.107" rx="5" ry="5"/>
+  <rect style="stroke: rgb(0, 0, 0); fill: url(&quot;#ff7f52ff&quot;);" x="152.76" y="390.886" width="302.31" height="23.107" rx="5" ry="5"/>
+  <rect style="stroke: rgb(0, 0, 0); fill: url(&quot;#ff7f52ff&quot;);" x="152.76" y="427.471" width="302.31" height="23.107" rx="5" ry="5"/>
+</svg>
